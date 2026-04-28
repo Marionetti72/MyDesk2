@@ -115,8 +115,8 @@ for titolo in titoli_list:
         drawdown = (close_prices - cummax) / cummax * 100
         max_dd = drawdown.min()
         
-        # Best/Worst month
-        monthly_returns = close_prices.resample('M').last().pct_change() * 100
+        # Best/Worst month (FIXED: M -> ME)
+        monthly_returns = close_prices.resample('ME').last().pct_change() * 100
         best_month = monthly_returns.max()
         worst_month = monthly_returns.min()
         
@@ -456,7 +456,8 @@ print(f"\n🎯 STRATEGIE CONSIGLIATE:")
 print(f"   1. TREND-FOLLOWING su titoli con CAGR > 5% ({len(trend_titoli)} titoli)")
 print(f"   2. MEAN-REVERSION su titoli volatili ({len(mean_rev_titoli)} titoli)")
 print(f"   3. LOW-VOLATILITY per capital preservation ({len(low_vol_titoli)} titoli)")
-print(f"   4. OPPORTUNISTIC ENTRY su drawdown > 10% (avg gain +{df_opp['Gain_20days_%'].mean():.2f}% in 20gg)")
+if opportunities:
+    print(f"   4. OPPORTUNISTIC ENTRY su drawdown > 10% (avg gain +{df_opp['Gain_20days_%'].mean():.2f}% in 20gg)")
 
 print(f"\n📈 PERIODI MIGLIORI PER COMPRARE:")
 print(f"   Quando drawdown > -10%")
